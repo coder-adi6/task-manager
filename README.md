@@ -21,9 +21,9 @@ A full-stack task management application built with Django, PostgreSQL, and Reac
 
 task-manager/
 ├── backend/         
-# Django REST API
+ Django REST API
 ├── frontend-react/  
-# React (Vite) frontend
+ React (Vite) frontend
 └── docker-compose.yml
 
 ## Running the App
