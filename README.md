@@ -61,6 +61,25 @@ Then open `http://localhost:3000`.
 - `GET/POST /api/tasks/` - list/create tasks
 - `PATCH /api/tasks/{id}/` - update task status
 
+## To open live
+
+Step 1 — Terminal 1 (Backend + DB)
+cd /workspaces/task-manager
+docker compose up
+Wait until you see Watching for file changes with StatReloader — that means Django + PostgreSQL are ready.
+
+Step 2 — Terminal 2 (Frontend)
+Click + to open a new terminal, then:
+bashcd /workspaces/task-manager/frontend-react
+npm run dev -- --host
+Wait until you see VITE ready.
+
+Step 3 — Make ports public
+Go to the Ports tab, right-click 8000 → Port Visibility → Public, do the same for 5173.
+
+Step 4 — Open the app
+Click the globe icon next to port 5173 — that's your app.
+
 ## Notes
 
 - The frontend stores the API token in local storage.
