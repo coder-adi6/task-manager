@@ -30,6 +30,16 @@ export default function Projects({ onLogout }) {
     }
   }
 
+  const handleDelete = async (projectId) => {
+    if (!window.confirm('Delete this project and all its tasks?')) return
+    try {
+      await api.delete(`/projects/${projectId}/`)
+      fetchProjects()
+    } catch {
+      setError('Failed to delete project')
+    }
+  }
+
   return (
     <div style={{ maxWidth: 600, margin: '40px auto', padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -43,10 +53,15 @@ export default function Projects({ onLogout }) {
       </form>
       {projects.length === 0 && <p style={{ color: '#888' }}>No projects yet. Create one above.</p>}
       {projects.map(p => (
-        <div key={p.id} onClick={() => navigate(`/projects/${p.id}/tasks`)}
-          style={{ padding: 16, marginBottom: 12, border: '1px solid #e5e7eb', borderRadius: 8, cursor: 'pointer', background: '#f9fafb' }}>
-          <strong>{p.name}</strong>
-          <p style={{ margin: 0, color: '#6b7280', fontSize: 14 }}>Click to view tasks →</p>
+        <div key={p.id} style={{ padding: 16, marginBottom: 12, border: '1px solid #e5e7eb', borderRadius: 8, background: '#f9fafb', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div onClick={() => navigate(`/projects/${p.id}/tasks`)} style={{ cursor: 'pointer', flex: 1 }}>
+            <strong>{p.name}</strong>
+            <p style={{ margin: 0, color: '#6b7280', fontSize: 14 }}>Click to view tasks →</p>
+          </div>
+          <button onClick={() => handleDelete(p.id)}
+            style={{ padding: '6px 12px', background: '#ef4444', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer', marginLeft: 12 }}>
+            Delete
+          </button>
         </div>
       ))}
     </div>

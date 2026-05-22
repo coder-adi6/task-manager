@@ -41,6 +41,16 @@ export default function Tasks({ onLogout }) {
     }
   }
 
+  const handleDelete = async (taskId) => {
+    if (!window.confirm('Delete this task?')) return
+    try {
+      await api.delete(`/tasks/${taskId}/`)
+      fetchTasks()
+    } catch {
+      setError('Failed to delete task')
+    }
+  }
+
   const filtered = filter === 'all' ? tasks : tasks.filter(t => t.status === filter)
 
   return (
@@ -66,14 +76,18 @@ export default function Tasks({ onLogout }) {
       {filtered.length === 0 && <p style={{ color: '#888' }}>No tasks found.</p>}
       {filtered.map(t => (
         <div key={t.id} style={{ padding: 16, marginBottom: 12, border: '1px solid #e5e7eb', borderRadius: 8, background: '#f9fafb' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <strong>{t.title}</strong>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+            <strong style={{ flex: 1 }}>{t.title}</strong>
             <select value={t.status} onChange={e => handleStatus(t.id, e.target.value)}
               style={{ padding: '4px 8px', borderRadius: 4, border: '1px solid #e5e7eb' }}>
               <option value="todo">Todo</option>
               <option value="in_progress">In Progress</option>
               <option value="done">Done</option>
             </select>
+            <button onClick={() => handleDelete(t.id)}
+              style={{ padding: '4px 10px', background: '#ef4444', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+              Delete
+            </button>
           </div>
         </div>
       ))}
